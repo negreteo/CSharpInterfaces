@@ -5,30 +5,40 @@ using DemoLibrary;
 namespace ConsoleUI {
   class Program {
     static void Main (string[] args) {
-      List<PhysicalProductModel> cart = AddSampleData ();
+
+      List<IProductModel> cart = AddSampleData ();
       CustomerModel customer = GetCustomer ();
 
-      foreach (PhysicalProductModel prod in cart) {
+      foreach (IProductModel prod in cart) {
         prod.ShipItem (customer);
+
+        if (prod is IDigitalProductModel digital) {
+          Console.WriteLine ($"For the {digital.Title} you have left {digital.TotalDownloadsLeft} downloads left");
+        }
       }
+
     }
 
     private static CustomerModel GetCustomer () {
       return new CustomerModel {
-        FirstName = "Tim",
-          LastName = "Corey",
-          City = "Scranton",
-          EmailAddress = "tim@IAmTimCorey.com",
+        FirstName = "Matt",
+          LastName = "Murdock",
+          City = "Hell's Kitchen",
+          EmailAddress = "Matt@Daredevil.com",
           PhoneNumber = "555-1212"
       };
     }
 
-    private static List<PhysicalProductModel> AddSampleData () {
-      List<PhysicalProductModel> output = new List<PhysicalProductModel> ();
+    private static List<IProductModel> AddSampleData () {
+      List<IProductModel> output = new List<IProductModel> ();
 
       output.Add (new PhysicalProductModel { Title = "Nerf Football" });
-      output.Add (new PhysicalProductModel { Title = "IAmTimCorey T-Shirt" });
+      output.Add (new PhysicalProductModel { Title = "Daredevil T-Shirt" });
       output.Add (new PhysicalProductModel { Title = "Hard Drive" });
+
+      output.Add (new DigitalProductModel { Title = "Lesson Source Code" });
+
+      output.Add (new CourseProductModel { Title = ".NET Core Start to Finish" });
 
       return output;
     }
